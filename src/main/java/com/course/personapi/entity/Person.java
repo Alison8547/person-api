@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity // Pra ser uma entidade do banco de dados
@@ -29,9 +30,9 @@ public class Person {
     @Column(nullable = false, unique = true) // unique = true: só pode criar com um cpf único
     private String cpf;
 
-    @Column(nullable = false)
+
     private LocalDate birthDate;
 
     @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) // OneToMany ou Um para muitos. Tá fazendo um relacionamento com minha class phone, FetchType.LAZY performance. ,cascade é tipo já cadastra logo tudo na hora do q passou lá
-    private List<Phone> phones;
+    private List<Phone> phones = new ArrayList<>();
 }
