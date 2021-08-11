@@ -3,27 +3,25 @@ package com.course.personapi.controller;
 
 import com.course.personapi.dto.MessageResponseDTO;
 import com.course.personapi.entity.Person;
-import com.course.personapi.repository.PersonRepository;
+import com.course.personapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/people")
 public class PersonController {
 
-    private PersonRepository personRepository;  // criando a refêrencia
+    private PersonService personService;
 
     @Autowired
-    public PersonController(PersonRepository personRepository) { // Construtor com a anotação Autowired
-        this.personRepository = personRepository;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
     }
 
     @PostMapping
-    public MessageResponseDTO createPerson(@RequestBody Person person) { // Metodo post para criar
-        Person savedPerson = personRepository.save(person); // Salvando no repository
-        return MessageResponseDTO // A mensagem string q criei lá na outra class
-                .builder()
-                .message("Created person with ID " + savedPerson.getId())   // pegando o id q salvou
-                .build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public MessageResponseDTO createPerson(@RequestBody Person person) {
+        return personService.createPerson(person);
     }
 }
