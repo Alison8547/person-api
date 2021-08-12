@@ -6,6 +6,7 @@ import com.course.personapi.entity.Person;
 import com.course.personapi.exception.PersonNotFoundException;
 import com.course.personapi.mapper.PersonMapper;
 import com.course.personapi.repository.PersonRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,16 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service // anotação para dizer para o Spring q essa class vai ter as regras de negócios
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
 
     private PersonRepository personRepository;
 
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
-    @Autowired
-    public PersonService(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
 
     @PostMapping
     public MessageResponseDTO createPerson(PersonDTO personDTO) {
