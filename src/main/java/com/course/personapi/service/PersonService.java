@@ -1,6 +1,6 @@
 package com.course.personapi.service;
 
-import com.course.personapi.dto.MessageResponseDTO;
+import com.course.personapi.dto.response.MessageResponseDTO;
 import com.course.personapi.dto.request.PersonDTO;
 import com.course.personapi.entity.Person;
 import com.course.personapi.mapper.PersonMapper;
@@ -8,6 +8,9 @@ import com.course.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service // anotação para dizer para o Spring q essa class vai ter as regras de negócios
 public class PersonService {
@@ -31,5 +34,13 @@ public class PersonService {
                 .builder()
                 .message("Created person with ID " + savedPerson.getId())
                 .build();
+    }
+
+    public List<PersonDTO> listAll() { // Metodo post
+
+        List<Person> allPeople = personRepository.findAll();
+        return allPeople.stream()
+                .map(personMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
