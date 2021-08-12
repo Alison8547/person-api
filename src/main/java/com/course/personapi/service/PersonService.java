@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service // anotação para dizer para o Spring q essa class vai ter as regras de negócios
@@ -46,10 +45,20 @@ public class PersonService {
     }
 
     public PersonDTO findById(Long id) throws PersonNotFoundException {
-        Person person = personRepository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id)); // elrseThrow e passando a excessão da class q criei
+        Person person = verifyIfExists(id);
 
         return personMapper.toDTO(person);
 
+    }
+
+    public void deleteById(Long id) throws PersonNotFoundException {
+        verifyIfExists(id);// Passando o metodo aq e verificando se existe o id
+
+        personRepository.deleteById(id);
+    }
+
+    private Person verifyIfExists(Long id) throws PersonNotFoundException { // Criando esse metodo porque antes tava duplicando linhas
+        return personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
     }
 }

@@ -33,8 +33,15 @@ public class PersonController {
     public List<PersonDTO> listAll(){ // Metodo post
         return personService.listAll();
     }
+
     @GetMapping("/{id}")
     public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException { // Anotação para dizer q vai pegar um id especifico
         return personService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) throws PersonNotFoundException { // metodo delete
+        personService.deleteById(id);
     }
 }
